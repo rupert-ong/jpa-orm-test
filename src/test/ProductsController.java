@@ -61,7 +61,7 @@ public class ProductsController extends HttpServlet {
     TypedQuery<Product> query = em.createNamedQuery("Product.findAll", Product.class);
     List<Product> results = query.getResultList();
 
-    sendResponseAll(req, res, results);
+    sendResponse(req, res, results);
   }
 
   /**
@@ -127,7 +127,7 @@ public class ProductsController extends HttpServlet {
    * @param res HttpServletResponse
    * @param msg String to output
    */
-  private void sendResponseAll(HttpServletRequest req, HttpServletResponse res, List<Product> products) {
+  private void sendResponse(HttpServletRequest req, HttpServletResponse res, List<Product> products) {
     HttpSession session = req.getSession();
     session.setAttribute("products", products);
     try{
