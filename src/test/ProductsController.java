@@ -23,7 +23,7 @@ public class ProductsController extends HttpServlet{
     } else if(req.getParameter("all") != null) {
       sendResponse(req, res, qString);
     } else {
-      sendResponse(req, res, "Should write to database");
+      saveToDatabase(req, res);
     }
   }
 
@@ -49,6 +49,32 @@ public class ProductsController extends HttpServlet{
     catch(IllegalArgumentException e){}
 
     sendResponse(req, res, msg);
+  }
+
+  /**
+   * Save an iterated Product to the database
+   * @param req HttpServletRequest
+   * @param res HttpServletResponse
+   */
+  private void saveToDatabase(HttpServletRequest req, HttpServletResponse res) {
+    EntityManager em = getEM(req);
+
+    Product prod = new Product();
+    prod.setProductName("Super Ski " + n++);
+
+    em.getTransaction().begin();
+    // EntityManager maintains a list of things to persist
+    if(!em.contains(prod)) {
+      try{
+        em.persist(prod); // Add to list
+        em.flush();       // Flush the list - saves to database
+      } catch(PersistenceException e){
+        System.err.println("New product not saved to database");
+      }
+    }
+    em.getTransaction().commit();
+
+    sendResponse(req, res, prod.getProductName() + " has been persisted");
   }
 
   /**
