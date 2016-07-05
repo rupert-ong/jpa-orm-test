@@ -1,15 +1,19 @@
 package test;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class ProductsController extends HttpServlet{
+public class ProductsController extends HttpServlet {
   private static int n = 1;
   private static final String emKey = "_entityManager";
 
@@ -21,7 +25,7 @@ public class ProductsController extends HttpServlet{
     if(req.getParameter("id") != null) {
       findProduct(req, res);
     } else if(req.getParameter("all") != null) {
-      sendResponse(req, res, qString);
+      listAllProducts(req, res);
     } else {
       saveToDatabase(req, res);
     }
@@ -49,6 +53,15 @@ public class ProductsController extends HttpServlet{
     catch(IllegalArgumentException e){}
 
     sendResponse(req, res, msg);
+  }
+
+  private void listAllProducts(HttpServletRequest req, HttpServletResponse res) {
+    EntityManager em = getEM(req);
+
+    TypedQuery<Product> query = em.createNamedQuery("Product.findAll", Product.class);
+    List<Product> results = query.getResultList();
+
+    sendResponseAll(req, res, results);
   }
 
   /**
@@ -108,4 +121,17 @@ public class ProductsController extends HttpServlet{
     } catch(Exception e){}
   }
 
+  /**
+   * Redirect to a confirmation page with a list to output (show all)
+   * @param req HttpServletRequest
+   * @param res HttpServletResponse
+   * @param msg String to output
+   */
+  private void sendResponseAll(HttpServletRequest req, HttpServletResponse res, List<Product> products) {
+    HttpSession session = req.getSession();
+    session.setAttribute("products", products);
+    try{
+      res.sendRedirect("confirm.jsp");
+    } catch(Exception e){}
+  }
 }
