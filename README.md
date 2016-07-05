@@ -47,6 +47,8 @@ jpa-orm-test/
     ├── eclipselink.jar
     ├── org.eclipse.persistence.jpa.modelgen.jar
     ├── javax.persistence.jar
+    ├── jstl-api.jar
+    ├── jstl-impl.jar
     ├── WebListener.java
     ├── web.xml
     └── *.jsp/html/css
