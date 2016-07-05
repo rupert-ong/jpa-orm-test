@@ -1,4 +1,3 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,25 +7,7 @@
 </head>
 <body>
   <div class="goodResult">
-    <c:choose>
-      <c:when test="${!empty sessionScope.products}">
-        <table>
-          <tr>
-            <th>Id</th>
-            <th>Product Name</th>
-          </tr>
-          <c:forEach var="item" items="${products}">
-            <tr>
-              <td>${item.id}</td>
-              <td>${item.productName}</td>
-            </tr>
-          </c:forEach>
-        </table>
-      </c:when>
-      <c:otherwise>
-        <p>${msg}</p>
-      </c:otherwise>
-    </c:choose>
+    <p>${msg}</p>
     <p><a href="${pageContext.request.contextPath}/test">Back</a></p>
   </div>
 </body>

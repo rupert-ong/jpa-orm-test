@@ -131,7 +131,7 @@ public class ProductsController extends HttpServlet {
     HttpSession session = req.getSession();
     session.setAttribute("products", products);
     try{
-      res.sendRedirect("confirm.jsp");
+      res.sendRedirect("show-all.jsp");
     } catch(Exception e){}
   }
 }
